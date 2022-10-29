@@ -1,0 +1,23 @@
+echo Hello!
+mkdir new_dir
+rmdir new_dir
+cp lorem/sed.txt lorem-copy
+cp  ~/Downloads/lab-bash/lorem/{at.txt,at.txte} ~/Downloads/lab-bash/lorem-copy
+cat sed.txt
+cat at.txt lorem.txt
+head -3 sed.txt
+tail -3 sed.txt
+echo "Homo homini lupus" sed.txt
+tail -3 sed.txt
+sed -i 's/ET/et/g' at.txt
+WHOAMI
+pwd
+find -name "*.txt"
+wc -l sed.txt
+$ ls -dq *lorem* | wc -l
+-
+-
+ read
+ echo $REPLY
+ mkdir name
+ rmdir name
