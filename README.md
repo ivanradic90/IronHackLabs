@@ -1,2 +1,2 @@
-# lab1
+# solution_lab1
 lab work for ironhack
