@@ -1,0 +1,38 @@
+select rating from sakila.film;
+
+
+select release_year from sakila.film;
+
+select * from sakila.film
+where title like '%ARMAGEDDON%';
+
+
+select * from sakila.film
+where title like '%APOLLO%';
+
+
+select * from sakila.film
+where title like '%APOLLO';
+
+
+select title from sakila.film
+where title regexp ' DATE' or title like 'date%';
+
+
+select length(title), title
+from  sakila.film
+order by length(title) desc
+limit 10;
+
+
+select length, title from sakila.film
+order by length desc
+limit 10;
+
+
+select count(*) from sakila.film
+where special_features regexp 'Behind the scenes';
+
+
+select * from sakila.film
+order by title asc;
