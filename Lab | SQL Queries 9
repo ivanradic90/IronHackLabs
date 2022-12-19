@@ -1,1 +1,36 @@
+CREATE TABLE rental_may LIKE rental;
+INSERT INTO rental_may SELECT * FROM rental
+where MONTH(rental_date) = 5;
+
+
+ CREATE TABLE rental_june LIKE rental;
+INSERT INTO rental_june SELECT * FROM rental
+where MONTH(rental_date) = 6;
+
+
+SELECT customer_id, count(rental_id) FROM sakila.rental_may
+group by customer_id
+order by count(rental_id);
+
+ SELECT customer_id, count(rental_id) FROM sakila.rental_june
+group by customer_id
+order by count(rental_id);
+
+
+from sqlalchemy import create_engine
+import pandas as pd
+import getpass
+password = getpass.getpass()
+
+
+engine = create_engine(connection_string)
+data_june = pd.read_sql_query('''SELECT * FROM sakila.rental_june;''', engine)
+data_june.head()
+
+
+
+engine = create_engine(connection_string)
+data_may = pd.read_sql_query('''SELECT * FROM sakila.rental_may;''', engine)
+data_june.head()
+
 
