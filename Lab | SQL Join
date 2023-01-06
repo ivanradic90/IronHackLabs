@@ -1,0 +1,29 @@
+## 1. List the number of films per category.
+
+SELECT category_id, COUNT(film_id) as num_of_movies FROM sakila.film_category GROUP BY category_id;
+
+## 2. Display the first and the last names, as well as the address, of each staff member.
+
+SELECT first_name, last_name, address_id, email FROM sakila.staff;
+
+## 3. Display the total amount rung up by each staff member in August 2005
+
+SELECT staff_id, count(rental_id), rental_date  FROM sakila.rental
+where rental_date > 2005-08-01 and rental_date < 2005-09-01
+group by  staff_id;
+
+## 4. List all films and the number of actors who are listed for each film.
+
+SELECT  f.title, f.film_id, count(a.actor_id) as num_of_actors FROM sakila.film f 
+join sakila.film_actor a
+on f.film_id = a.film_id
+group by title;
+
+## 5. Using the payment and the customer tables as well as the JOIN command, list the total amount paid by each customer. List the customers alphabetically by their last names.
+
+
+SELECT c.customer_id, c.first_name, c.last_name, sum(p.amount) as total_amount FROM sakila.customer c
+join sakila.payment p
+on  c.customer_id = p.customer_id
+group by customer_id
+order by last_name;
