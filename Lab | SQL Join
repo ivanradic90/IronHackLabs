@@ -8,8 +8,8 @@ SELECT first_name, last_name, address_id, email FROM sakila.staff;
 
 ## 3. Display the total amount rung up by each staff member in August 2005
 
-SELECT staff_id, count(rental_id), rental_date  FROM sakila.rental
-where rental_date > 2005-08-01 and rental_date < 2005-09-01
+SELECT staff_id, count(rental_id) as total  FROM sakila.rental
+where Month(rental_date) = 8
 group by  staff_id;
 
 ## 4. List all films and the number of actors who are listed for each film.
