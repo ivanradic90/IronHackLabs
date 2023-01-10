@@ -1,16 +1,26 @@
 ## 1. List the number of films per category.
 
-SELECT category_id, COUNT(film_id) as num_of_movies FROM sakila.film_category GROUP BY category_id;
+SELECT c.name, c.category_id, count(fc.film_id) as counts_
+FROM sakila.film_category fc
+join sakila.category c
+on fc.category_id = c.category_id 
+group by category_id;
 
 ## 2. Display the first and the last names, as well as the address, of each staff member.
 
-SELECT first_name, last_name, address_id, email FROM sakila.staff;
+SELECT s.first_name, s.last_name, a.address, a.district
+FROM sakila.staff s
+left join sakila.address a
+on s.address_id = a.address_id
 
 ## 3. Display the total amount rung up by each staff member in August 2005
 
-SELECT staff_id, count(rental_id) as total  FROM sakila.rental
-where Month(rental_date) = 8 and Year(rental_date) = 2005
-group by  staff_id;
+SELECT s.first_name, s.last_name, sum(p.amount)
+FROM sakila.staff s
+join sakila.payment p
+on sakila.staff.staff_id = p.staff_id
+where month(p.payment_date) = 8 and year(p.payment_date) = 2005
+group by 1,2;
 
 ## 4. List all films and the number of actors who are listed for each film.
 
