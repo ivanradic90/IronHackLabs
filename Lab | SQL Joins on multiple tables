@@ -1,1 +1,71 @@
+-- Write a query to display for each store its store ID, city, and country.
 
+select s.store_id, c.city, co.country from sakila.store s
+join sakila.address a
+on  s.address_id = a.address_id
+join sakila.city c
+on c.city_id = a.city_id
+join sakila.country co
+on co.country_id = c.country_id;
+
+-- Write a query to display how much business, in dollars, each store brought in.
+
+SELECT store.store_id,  sum(payment.amount) as total FROM sakila.store store
+join sakila.staff staff
+on store.store_id = staff.store_id
+join sakila.payment payment
+on payment.staff_id = staff.staff_id
+group by 1;
+
+
+-- What is the average running time of films by category?
+
+SELECT category.name , floor(avg(film.length)) as avg_lenght
+FROM sakila.film
+join sakila.film_category on film.film_id = film_category.film_id
+join sakila.category on category.category_id = film_category.category_id
+group by 1
+order by avg_lenght desc
+;
+
+-- Which film categories are longest?
+
+SELECT category.name , floor(avg(film.length)) as avg_lenght
+FROM sakila.film
+join sakila.film_category on film.film_id = film_category.film_id
+join sakila.category on category.category_id = film_category.category_id
+group by 1
+order by avg_lenght desc
+limit 3;
+
+-- Display the most frequently rented movies in descending order.
+
+SELECT f.title, i.film_id, count(r.inventory_id) as total_rent FROM sakila.inventory i
+join sakila.rental r
+on  r.inventory_id = i.inventory_id 
+join sakila.film f
+on f.film_id = i.film_id
+group  by film_id
+order by total_rent desc
+limit 3;
+
+
+-- List the top five genres in gross revenue in descending order.
+
+select category.name, sum(payment.amount) as gross_revenue 
+from sakila.category
+join sakila.film_category on category.category_id = film_category.category_id
+join sakila.film on film.film_id = film_category.film_id
+join sakila.inventory on inventory.film_id = film.film_id
+join sakila.rental on rental.inventory_id = inventory.inventory_id
+join sakila.payment on payment.rental_id = rental.rental_id
+group by 1
+order by 2 desc;
+
+-- Is "Academy Dinosaur" available for rent from Store 1?
+
+select * 
+from sakila.film 
+join sakila.inventory on film.film_id = inventory.film_id
+join sakila.store on store.store_id = inventory.store_id
+where store.store_id = 1 and film.title = 'ACADEMY DINOSAUR';
