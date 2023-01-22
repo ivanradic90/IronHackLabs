@@ -1,1 +1,36 @@
+-- Lab | SQL Advanced queries
 
+-- List each pair of actors that have worked together.
+
+SELECT fa1.actor_id, fa2.actor_id, fa1.film_id 
+FROM sakila.film_actor fa1
+join sakila.film_actor fa2
+on fa1.actor_id != fa2.actor_id
+and fa1.film_id = fa2.film_id
+where fa1.actor_id < fa2.actor_id;
+
+
+
+
+-- For each film, list actor that has acted in more films.
+
+
+create temporary table sakila.movie_counts
+SELECT * , count(film_id) over(partition by actor_id) as film_counts
+FROM sakila.film_actor
+order by film_id ;
+
+
+with cte_film_counts_ranks as
+(
+select * , rank() over(partition by film_id order by film_counts desc) as ranks_
+from 
+sakila.movie_counts
+)
+select actor.first_name, actor.last_name, film.title, cte_film_counts_ranks.film_counts
+from cte_film_counts_ranks
+join sakila.actor 
+on cte_film_counts_ranks.actor_id = actor.actor_id
+join sakila.film
+on cte_film_counts_ranks.film_id = film.film_id
+where ranks_ = 1;
