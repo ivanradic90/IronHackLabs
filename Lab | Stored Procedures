@@ -1,0 +1,64 @@
+-- 1. 
+
+DROP PROCEDURE IF EXISTS get_action_movie_customers;
+
+DELIMITER //
+
+CREATE PROCEDURE get_action_movie_customers()
+BEGIN
+  SELECT first_name, last_name, email
+  FROM customer
+  JOIN rental ON customer.customer_id = rental.customer_id
+  JOIN inventory ON rental.inventory_id = inventory.inventory_id
+  JOIN film ON film.film_id = inventory.film_id
+  JOIN film_category ON film_category.film_id = film.film_id
+  JOIN category ON category.category_id = film_category.category_id
+  WHERE category.name = 'Action'
+  GROUP BY first_name, last_name, email;
+END //
+
+DELIMITER ;
+
+
+CALL get_action_movie_customers();
+
+-- 2.
+DROP PROCEDURE IF EXISTS get_rental_category;
+
+DELIMITER //
+
+CREATE PROCEDURE get_rental_category(in cat_name varchar(20))
+BEGIN
+  SELECT first_name, last_name, email
+  FROM customer
+  JOIN rental ON customer.customer_id = rental.customer_id
+  JOIN inventory ON rental.inventory_id = inventory.inventory_id
+  JOIN film ON film.film_id = inventory.film_id
+  JOIN film_category ON film_category.film_id = film.film_id
+  JOIN category ON category.category_id = film_category.category_id
+  WHERE category.name = cat_name
+  GROUP BY first_name, last_name, email;
+END //
+
+DELIMITER ;
+
+CALL get_rental_category('Animation')
+
+-- 3. 
+
+
+DELIMITER //
+
+CREATE PROCEDURE movie_count_by_category (IN min_movie_count int(3))
+BEGIN
+  SELECT category.category_id, sakila.category.name, COUNT(*) AS movie_count
+  FROM category
+  JOIN sakila.film_category ON sakila.category.category_id = sakila.film_category.category_id
+  GROUP BY category.category_id
+  HAVING movie_count > min_movie_count;
+END //
+
+DELIMITER ;
+
+
+CALL movie_count_by_category(66)
